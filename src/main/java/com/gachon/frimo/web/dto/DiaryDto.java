@@ -17,7 +17,6 @@ public class DiaryDto {
     public static class GetDiaryResponseDto { 
         //일기(최신순)으로 가져오기
         private Long diaryPk;
-        private String diaryTitle;
         private String diaryContent;
         private User user; // userPk
         private LocalDateTime dateCreated;
@@ -28,9 +27,8 @@ public class DiaryDto {
         private int mainSent;
 
         @Builder
-        public GetDiaryResponseDto(Long diaryPk, String diaryTitle, String diaryContent, User user, LocalDateTime dateCreated, int dateCreatedYear,int dateCreatedMonth, int mainSent, String dateCreatedinString){
+        public GetDiaryResponseDto(Long diaryPk, String diaryContent, User user, LocalDateTime dateCreated, int dateCreatedYear,int dateCreatedMonth, int mainSent, String dateCreatedinString){
             this.diaryPk=diaryPk;
-            this.diaryTitle = diaryTitle;
             this.diaryContent = diaryContent;
             this.user = user;
             this.dateCreated = dateCreated;
@@ -44,7 +42,7 @@ public class DiaryDto {
     //Entity -> DTO 
     public static GetDiaryResponseDto toGetDiaryResponseDto(Diary diary){
         Long diaryPk=diary.getDiaryPk();
-        String diaryTitle = diary.getDiaryTitle();
+
         String diaryContent = diary.getDiaryContent();
         User user = diary.getAuthor();
         LocalDateTime dateCreated = diary.getDateCreated();
@@ -55,7 +53,6 @@ public class DiaryDto {
         
         GetDiaryResponseDto getDiaryResponseDto = GetDiaryResponseDto.builder()
                             .diaryPk(diaryPk)
-                            .diaryTitle(diaryTitle)
                             .diaryContent(diaryContent)
                             .user(user)
                             .dateCreated(dateCreated)
@@ -72,14 +69,12 @@ public class DiaryDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class AddDiaryRequestDto {
         
-        private String diaryTitle;
         private String diaryContent;
         private Long userPk; // userPk로 service단에서 user찾기
         private LocalDateTime dateCreated;
 
         @Builder
-        public AddDiaryRequestDto(String diaryTitle, String diaryContent, Long userPk, LocalDateTime dateCreated ) {
-            this.diaryTitle = diaryTitle;
+        public AddDiaryRequestDto(String diaryContent, Long userPk, LocalDateTime dateCreated ) {
             this.diaryContent = diaryContent;
             this.userPk = userPk;
             this.dateCreated = dateCreated;

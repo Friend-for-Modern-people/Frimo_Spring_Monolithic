@@ -14,15 +14,13 @@ public class DiaryInterestTagDto {
 
         private Long diaryPk;
         private String tagContent;
-        private Long sentPK; //10,19,28,37,46
-        private String category;
+        private String sentimentTag;
 
         @Builder
-        public AddTagRequestDto(Long diaryPk, String tagContent, Long sentPk, String category) {
+        public AddTagRequestDto(Long diaryPk, String tagContent, String sentimentTag) {
             this.diaryPk = diaryPk;
             this.tagContent = tagContent;
-            this.sentPK = sentPk;
-            this.category = category;
+            this.sentimentTag = sentimentTag;
         }
     }
 
@@ -30,18 +28,15 @@ public class DiaryInterestTagDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class GetTagResponseDto {
         private String tagContent;
-        private int sentLargeId; // 0~5
         private Long diaryPk;
-        private Long sentPk;
-        private String category;
+        private String sentimentTag;
 
         @Builder
-        public GetTagResponseDto(String tagContent, int sentLargeId, Long diaryPk, Long sentPk, String category) {
+        public GetTagResponseDto(String tagContent, Long diaryPk, String sentimentTag) {
             this.tagContent = tagContent;
-            this.sentLargeId = sentLargeId;
             this.diaryPk =diaryPk;
-            this.sentPk = sentPk;
-            this.category = category;
+            this.sentimentTag = sentimentTag;
+   
         }
     }
 
@@ -50,10 +45,8 @@ public class DiaryInterestTagDto {
 
         GetTagResponseDto getTagResponseDto = GetTagResponseDto.builder()
                 .tagContent(diaryInterestTag.getTagContent())
-                .sentLargeId(diaryInterestTag.getSentimentTag().getSentLargeId())
                 .diaryPk(diaryInterestTag.getDiary().getDiaryPk())
-                .category(diaryInterestTag.getCategory())
-                .sentPk(diaryInterestTag.getSentimentTag().getSentPk())
+                .sentimentTag(diaryInterestTag.getSentimentTag())
                 .build();
 
         return getTagResponseDto;

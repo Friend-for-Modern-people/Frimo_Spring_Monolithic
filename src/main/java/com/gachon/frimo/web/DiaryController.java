@@ -13,6 +13,8 @@ import com.gachon.frimo.service.DiaryInterestTagService;
 import com.gachon.frimo.service.DiaryService;
 import com.gachon.frimo.service.UserService;
 import com.gachon.frimo.web.dto.DiaryDto;
+import com.gachon.frimo.web.dto.ModelDto;
+import com.gachon.frimo.web.dto.ModelDto.CreateSummaryRequestDto;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -39,9 +41,9 @@ public class DiaryController {
      * 
      */
     @GetMapping(value="/{diaryPk}/only1")
-    public ResponseEntity<DiaryDto.GetDiaryResponseDto>
+    public ResponseEntity<Diary>
     getDiaryEntity(@PathVariable(value="diaryPk") Long diaryPk){
-        DiaryDto.GetDiaryResponseDto diary=diaryService.getOneDiary(diaryPk);
+        Diary diary=diaryService.getOneDiary(diaryPk);
         return ResponseEntity.status(HttpStatus.OK).body(diary);
     }
     /*
@@ -139,5 +141,17 @@ public class DiaryController {
         
         return ResponseEntity.status(HttpStatus.OK).body(diaryService.getDiariesCnt(userPk));
     }
-    
+   
+    /*
+     * AI로 일기 작성
+     * 
+     * @param PathVariable Long userPk, @RequestBody ModelDto.CreateDiaryRequestDto
+     * 
+     * @return 201 CREATED , saved
+     */
+    @PostMapping(value="/{userPk}/aiCreate")
+    public ResponseEntity<Diary> aiCreateDiary(@PathVariable(value="userPk") Long userPk, @RequestBody CreateSummaryRequestDto createDiaryRequestDto) {
+        Diary diary =diaryService.aiCreateDiary(userPk, createDiaryRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(diary);
+    }
 }

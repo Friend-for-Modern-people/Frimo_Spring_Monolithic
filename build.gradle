@@ -50,9 +50,10 @@ dependencies {
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 	
 	implementation files("json-simple-1.1.1.jar")
-
+implementation platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.5")
+      implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+	//implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: "4.0.2"
 }
-
 tasks.named('test') {
 	useJUnitPlatform()
 }

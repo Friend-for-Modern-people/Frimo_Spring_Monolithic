@@ -1,7 +1,5 @@
 package com.gachon.frimo.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -17,11 +15,7 @@ import com.gachon.frimo.domain.diary.Diary;
 import com.gachon.frimo.domain.diary.DiaryRepository;
 import com.gachon.frimo.domain.diaryInterestTag.DiaryInterestTag;
 import com.gachon.frimo.domain.diaryInterestTag.DiaryInterestTagRepository;
-import com.gachon.frimo.domain.sentimentTag.SentimentTag;
-import com.gachon.frimo.domain.sentimentTag.SentimentTagRepository;
-import com.gachon.frimo.web.dto.DiaryDto;
 import com.gachon.frimo.web.dto.DiaryInterestTagDto;
-import com.gachon.frimo.web.dto.DiaryInterestTagDto.GetTagResponseDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,8 +26,6 @@ public class DiaryInterestTagService {
     DiaryInterestTagRepository diaryInterestTagRepository;
     @Autowired
     DiaryRepository diaryRepository;
-    @Autowired
-    SentimentTagRepository sentimentTagRepository;
 
     @Transactional
     // 해당 일기의 태그에서 감정만 뽑아 계산하기, 가장 많은 감정을 반환 
@@ -43,22 +35,22 @@ public class DiaryInterestTagService {
         List<DiaryInterestTag> tags = diaryInterestTagRepository.findAllByDiary(diary);
 
         List<DiaryInterestTag> angerlist = tags.stream()
-                .filter(t -> (t.getSentimentTag().getSentLargeId() == 0))
+                .filter(t -> (t.getSentimentTag().equals("Anger")))
                 .collect(Collectors.toList());
         List<DiaryInterestTag> sadlist = tags.stream()
-                .filter(t -> (t.getSentimentTag().getSentLargeId() == 1))
+                .filter(t -> (t.getSentimentTag().equals("Sadness")))
                 .collect(Collectors.toList());
         List<DiaryInterestTag> anxilist = tags.stream()
-                .filter(t -> (t.getSentimentTag().getSentLargeId() == 2))
+                .filter(t -> (t.getSentimentTag().equals("Anxiety")))
                 .collect(Collectors.toList());
         List<DiaryInterestTag> hurtlist = tags.stream()
-                .filter(t -> (t.getSentimentTag().getSentLargeId() == 3))
+                .filter(t -> (t.getSentimentTag().equals("Hurt")))
                 .collect(Collectors.toList());
         List<DiaryInterestTag> embarlist = tags.stream()
-                .filter(t -> (t.getSentimentTag().getSentLargeId() == 4))
+                .filter(t -> (t.getSentimentTag().equals("Embarrassment")))
                 .collect(Collectors.toList());
         List<DiaryInterestTag> haplist = tags.stream()
-                .filter(t -> (t.getSentimentTag().getSentLargeId() == 5))
+                .filter(t -> (t.getSentimentTag().equals("Joy")))
                 .collect(Collectors.toList());
 
         int anger = angerlist.size(); // 0
@@ -89,13 +81,11 @@ public class DiaryInterestTagService {
     @Transactional
     public void addTag(DiaryInterestTagDto.AddTagRequestDto tag) {
         Diary diary = diaryRepository.findByDiaryPk(tag.getDiaryPk());
-        SentimentTag sentimentTag = sentimentTagRepository.findBySentPk(tag.getSentPK());
 
         DiaryInterestTag newTag = DiaryInterestTag.builder()
                 .tagContent(tag.getTagContent())
-                .category(tag.getCategory())
                 .diary(diary)
-                .sentimentTag(sentimentTag)
+                .sentimentTag(tag.getSentimentTag())
                 .build();
         diaryInterestTagRepository.save(newTag);
     }

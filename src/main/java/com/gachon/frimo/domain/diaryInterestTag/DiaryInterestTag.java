@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.gachon.frimo.domain.BaseTimeEntity;
 import com.gachon.frimo.domain.diary.Diary;
-import com.gachon.frimo.domain.sentimentTag.SentimentTag;
 
 import java.io.Serializable;
 
@@ -33,21 +32,16 @@ public class DiaryInterestTag extends BaseTimeEntity implements Serializable {
     @JoinColumn(name = "diary")
     private Diary diary;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-
-    @JoinColumn(name = "sentimentTag")
-    private SentimentTag sentimentTag;
+    @Column(name = "sentimentTag")
+    private String sentimentTag;
 
     @Column(name = "tag_content", length = 45) // 해시테그
     private String tagContent;
 
-    @Column(name = "category", length=16)
-    private String category;
-
     @Builder
-    public DiaryInterestTag(String tagContent, String category, Diary diary, SentimentTag sentimentTag) {
+    public DiaryInterestTag(String tagContent,  Diary diary, String sentimentTag) {
         this.tagContent = tagContent;
-        this.category = category;
+
         this.diary = diary;
         this.sentimentTag = sentimentTag;
     }
