@@ -77,7 +77,7 @@ public class DiaryInterestTagService {
 
     }
 
-    // 테그를 추가 ( 모델의 아웃풋으로 나오는 태그도 저장할 수 있을까..?)
+    // 테그를 추가 
     @Transactional
     public void addTag(DiaryInterestTagDto.AddTagRequestDto tag) {
         Diary diary = diaryRepository.findByDiaryPk(tag.getDiaryPk());

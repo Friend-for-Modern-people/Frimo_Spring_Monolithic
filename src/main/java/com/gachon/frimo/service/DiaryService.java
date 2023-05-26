@@ -4,6 +4,7 @@ import javax.transaction.Transactional;
 
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.gachon.frimo.Openfeign;
@@ -11,11 +12,13 @@ import com.gachon.frimo.domain.diary.Diary;
 import com.gachon.frimo.domain.diary.DiaryRepository;
 import com.gachon.frimo.domain.user.UserRepository;
 import com.gachon.frimo.web.dto.DiaryDto;
+import com.gachon.frimo.web.dto.DiaryInterestTagDto;
 import com.gachon.frimo.web.dto.ModelDto;
 import com.gachon.frimo.web.dto.DiaryDto.GetDiaryResponseDto;
 import com.gachon.frimo.web.dto.ModelDto.CreateSummaryRequestDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import com.gachon.frimo.domain.user.User;
 
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class DiaryService {
     @Autowired
     DiaryRepository diaryRepository;
@@ -33,6 +37,8 @@ public class DiaryService {
     UserRepository userRepository;
     @Autowired
     Openfeign openfeign;
+    @Autowired
+    DiaryInterestTagService diaryInterestTagService;
 
     @Transactional
     public List<DiaryDto.GetDiaryResponseDto> getDiaries(Long userPk) {
@@ -123,20 +129,40 @@ public class DiaryService {
     @Transactional
     public Diary aiCreateDiary(Long userPk, CreateSummaryRequestDto createDiaryRequestDto) {
         User user = userRepository.findByUserPk(userPk);
-        String result = openfeign.GetSummaryAndSentiment(createDiaryRequestDto);
+        ModelDto.GetSummaryResponseDto result = openfeign.GetSummaryAndSentiment(createDiaryRequestDto);
 
         LocalDateTime dateCreated = LocalDateTime.now();
         Diary newDiary = Diary.builder()
-                .diaryContent(result)
+                .diaryContent(result.getSummary())
                 .dateCreated(dateCreated)
                 .author(user)
                 .dateCreatedMonth(dateCreated.getMonthValue())
                 .dateCreatedYear(dateCreated.getYear())
                 .mainSent(7)
                 .build();
-               
+        Diary createdDiary = diaryRepository.save(newDiary);
+        
+        Long diaryPk = createdDiary.getDiaryPk();
+        String tagContent= "AI";
+        int sentiment = Integer.parseInt(result.getSeg());
+        String sentimentTag="";
+        if (sentiment <10 && sentiment >0) sentimentTag = "Anger";
+        if (sentiment <20 && sentiment >10) sentimentTag = "Sadness";
+        if (sentiment <30 && sentiment >20) sentimentTag = "Anxiety";
+        if (sentiment <40 && sentiment >30) sentimentTag = "Hurt";
+        if (sentiment <50 && sentiment >40) sentimentTag = "Embarrassment";
+        if (sentiment <60 && sentiment >50) sentimentTag = "Joy";
+        
 
-        return diaryRepository.save(newDiary);
+        //감정테그 저장
+        diaryInterestTagService.addTag(DiaryInterestTagDto.AddTagRequestDto.builder()
+                .diaryPk(diaryPk)
+                .tagContent(tagContent)
+                .sentimentTag(sentimentTag)
+                .build());
+        
+        //메인 감정 수정.
+        return diaryInterestTagService.getMainSent(diaryPk);   
     }
 
 }

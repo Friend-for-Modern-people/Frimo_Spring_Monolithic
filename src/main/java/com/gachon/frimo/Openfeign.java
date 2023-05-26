@@ -23,6 +23,8 @@ public interface Openfeign {
     public String test();
 
 
-    @PostMapping(path="/summary")
-    public String GetSummaryAndSentiment(@RequestBody ModelDto.CreateSummaryRequestDto CreateSummaryRequestDto);
+    @PostMapping(path="/model")
+    public ModelDto.GetSummaryResponseDto GetSummaryAndSentiment(@RequestBody ModelDto.CreateSummaryRequestDto CreateSummaryRequestDto);
+
+  
 }

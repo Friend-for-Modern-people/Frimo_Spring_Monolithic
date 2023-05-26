@@ -9,10 +9,6 @@ This repository implemented a backstage to communicate with Frimo. It uses HTTP 
 
 FrimorServer only supports HTTP environment and mySQL, so for testing, The db setting should be prioritized. Put the details of the db into **properties**.
 
-```zsh
-cd <project directory>
-FrimoApplication.java
-```
 
 ## Implementation
 ### ERD
@@ -23,9 +19,4 @@ FrimoApplication.java
 
 <p align="center"><img src="https://github.com/Friend-for-Modern-people/FrimoServer/blob/main/imges/architecture.png?raw=true" width="50%" height="50%"></p>
 
-## TODO
 
-- Chat directory: refactoring and structuring
-- Model: Extended File Settings
-- Notice: CRUD API for announcement
-- Comments: Allow AI to comment on the diary

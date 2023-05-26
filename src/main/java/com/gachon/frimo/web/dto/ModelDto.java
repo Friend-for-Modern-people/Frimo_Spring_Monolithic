@@ -30,11 +30,13 @@ public class ModelDto {
     @Getter
     @RequiredArgsConstructor
     public static class GetSummaryResponseDto {
-        private String summaryContent;
+        private String summary;
+        private String seg;
 
         @Builder
-        public GetSummaryResponseDto(String summaryContent) {
-            this.summaryContent = summaryContent;
+        public GetSummaryResponseDto(String summary, String seg) {
+            this.summary = summary;
+            this.seg = seg;
         }
     }
     
