@@ -3,9 +3,9 @@ services:
   web:
     build: ./
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://{HOSTNAME}:{PORT}?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
     ports:
       - "8080:8080"
     depends_on:
@@ -13,6 +13,6 @@ services:
   db:
     image: mysql:latest
     environment:
-      - MYSQL_DATABASE=
-      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_DATABASE=frimo
+      - MYSQL_ROOT_PASSWORD=1234
 
