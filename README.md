@@ -51,6 +51,23 @@ openfeign.url=${MODEL_SERVER}
     If you want to close with it then type this command ``` docker compose down -v --rmi=local ```
 
 ***!! And you can also use with .env file if you have own Databases***
+
+## API Documentation
+This Repository already have swagger libs, so that you can use this url 
+
+```
+https://{HOST DOMAIN}/swagger-ui/index.html#/
+``` 
+Then you can see this page for start.
+
+![image](https://github.com/Friend-for-Modern-people/Frimo_Spring_Monolithic/assets/80394866/638aeb2a-71c6-4c65-9949-2b5dc0efb9ad)
+
+Just click and test below APIs.
+
+![image](https://github.com/Friend-for-Modern-people/Frimo_Spring_Monolithic/assets/80394866/194f0867-4c20-4ffd-9a75-8056fbe7d75a)
+
+If you want check some more details then, pdf is ready for you.
+
 ## Implementation
 ### ERD
 
